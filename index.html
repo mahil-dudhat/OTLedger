@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTLedger | OT Asset Inventory</title>
+
+    <link rel="icon" type="image/svg+xml" href="assets/images/Logo.svg">
+
+    <!-- BS5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --palette-primary: #2C3E50;
+            --palette-secondary: #005A9C;
+            --palette-background: #E5E7EB;
+            --palette-surface: #F8FAFC;
+            --palette-text-primary: #111827;
+            --palette-text-secondary: #6B7280;
+            --palette-success: #15803D;
+            --palette-error: #EF4444;
+            --palette-warning: #EF4444;
+            --palette-info: #005A9C;
+            --palette-lines: #D1D5DB;
+            --palette-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--palette-background);
+            color: var(--palette-text-primary);
+        }
+
+        .text-primary {
+            color: var(--palette-primary) !important;
+        }
+
+        .text-secondary {
+            color: var(--palette-text-secondary) !important;
+        }
+
+        .text-success {
+            color: var(--palette-success) !important;
+        }
+
+        .text-warning {
+            color: var(--palette-warning) !important;
+        }
+
+        .text-danger {
+            color: var(--palette-error) !important;
+        }
+
+        .text-info {
+            color: var(--palette-info) !important;
+        }
+
+        .text-white {
+            color: var(--palette-white) !important;
+        }
+
+        .bg-white {
+            background-color: var(--palette-surface) !important;
+        }
+
+        .border-bottom, .border-top {
+            border-color: var(--palette-lines) !important;
+        }
+
+        .btn-primary {
+            background-color: var(--palette-secondary);
+            border-color: var(--palette-secondary);
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #00467A;
+                border-color: #00467A;
+                color: white;
+            }
+
+        .navbar-custom {
+            background-color: var(--palette-primary);
+            border-bottom: 1px solid #1A242F;
+        }
+
+        .navbar-custom .nav-link {
+            color: var(--palette-lines);
+            transition: color 0.2s ease;
+        }
+
+            .navbar-custom .nav-link:hover {
+                color: #FFFFFF;
+            }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--palette-primary) 0%, var(--palette-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .screenshot-container {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--palette-lines);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            background-color: var(--palette-surface);
+            transition: transform 0.3s ease;
+        }
+
+            .screenshot-container:hover {
+                transform: translateY(-5px);
+            }
+
+        .browser-header {
+            background-color: var(--palette-lines);
+            padding: 10px 16px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .hero-section {
+            background: linear-gradient(180deg, var(--palette-surface) 0%, var(--palette-background) 100%);
+            padding: 100px 0;
+        }
+
+        .dark-section {
+            background-color: var(--palette-primary);
+            color: white;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .text-muted-light {
+            color: var(--palette-lines);
+        }
+
+        .module-badge {
+            background-color: var(--palette-secondary);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 0.4em 0.8em;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+
+        .card-philosophy {
+            background: linear-gradient(145deg, #1E2B38 0%, #17212B 100%);
+            border: 1px solid rgba(209, 213, 219, 0.1);
+            border-radius: 1rem;
+            color: white;
+            height: 100%;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-philosophy:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(209, 213, 219, 0.2);
+        }
+
+        .card-philosophy::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .card-truth::before {
+            background-color: var(--palette-info);
+        }
+
+        .card-situation::before {
+            background-color: var(--palette-warning);
+        }
+
+        .card-drift::before {
+            background-color: var(--palette-success);
+        }
+
+        .icon-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-truth {
+            color: var(--palette-info);
+        }
+
+        .icon-situation {
+            color: var(--palette-warning);
+        }
+
+        .icon-drift {
+            color: var(--palette-success);
+        }
+
+
+        .zoomable-image {
+            cursor: zoom-in;
+            transition: opacity 0.2s;
+        }
+
+        .zoomable-image:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav class="navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="#">
+                <img src="assets/images/OTLedgerLogo.svg" alt="OTLedger Logo" height="32" class="me-2">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="#philosophy">Why OTLedger</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="#modules">Platform Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" href="https://github.com/mahil-dudhat/OTLedger/issues" target="_blank">Issue Tracker</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">
+                The Master Register for <span class="gradient-text">Complex OT Environments.</span>
+            </h1>
+            <p class="lead text-secondary mx-auto mb-5" style="max-width: 800px;">
+                Stop rebuilding work from scratch. Bring clarity, structure, and reliable data to your industrial automation and control systems.
+            </p>
+
+            <div class="screenshot-container mx-auto" style="max-width: 900px;">
+                <div class="browser-header">
+                    <div class="browser-dot" style="background: var(--palette-error);"></div>
+                    <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                    <div class="browser-dot" style="background: var(--palette-success);"></div>
+                    <span class="ms-3 text-secondary small font-monospace">OTLedger Dashboard</span>
+                </div>
+                <!-- Img -->
+                <img src="assets/images/dashboard.png" alt="Dashboard" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section id="philosophy" class="dark-section text-center">
+        <div class="container">
+            <span class="fw-bold small text-uppercase mb-2 d-block" style="letter-spacing: 1px;">The Core Problem & Solution</span>
+            <h2 class="fw-bold mb-4">Actionable Clarity for Industrial Automation</h2>
+            <p class="mb-5 mx-auto text-muted-light" style="max-width: 800px; font-size: 1.1rem; line-height: 1.6;">
+                In an ever-growing, complex OT environment, relying on memory isn't an option. The stakes are physical, operational, and financial. OTLedger provides the structure and clarity required for decisive, secure action.
+            </p>
+            <div class="row g-4 text-start">
+                <div class="col-md-4">
+                    <div class="card-philosophy card-situation">
+                        <div class="icon-circle icon-situation">
+                            <i class="bi bi-folder-x"></i>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3">The Challenge</h4>
+                        <p class="text-muted-light mb-0" style="line-height: 1.7;">Teams too often rely on scattered information: static spreadsheets, buried folders, and tribal knowledge. When information changes, professionals repeat work, draining time and introducing risk.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-philosophy card-truth">
+                        <div class="icon-circle icon-truth">
+                            <i class="bi bi-database-check"></i>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3">The Solution</h4>
+                        <p class="text-muted-light mb-0" style="line-height: 1.7;">OTLedger serves as a dynamic, centralized master register. More than just an inventory, it structures day-to-day tasks, ensuring teams have the exact data and references they need, exactly when they need them.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-philosophy card-drift">
+                        <div class="icon-circle icon-drift">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4 class="fw-bold text-white mb-3">The Outcome</h4>
+                        <p class="text-muted-light mb-0" style="line-height: 1.7;">Eliminate rework and reduce human error. OTLedger captures workflow history, documents complex processes, and turns scattered task knowledge into reusable assets for continuous risk management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules -->
+    <section id="modules" class="py-5 bg-white">
+        <div class="container py-5">
+            <h2 class="fw-bold text-center text-primary mb-5 pb-4">The Complete OT Asset Management Platform.</h2>
+
+            <!-- Mod 1 -->
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-5 mb-4 mb-md-0">
+                    <span class="module-badge">1. FACILITY MANAGEMENT</span>
+                    <h3 class="fw-bold mb-3">Hierarchical Site Mapping.</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        Structure your organization logically. Map physical plants, sub-sites, and control rooms. Assign dedicated Facility Managers and Engineers to oversee specific geographic or operational areas.
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/sitespage.png" alt="Site Mapping" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mod 2 -->
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-7 order-2 order-md-1">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/assetspage.png" alt="Master Inventory" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+                <div class="col-md-5 order-1 order-md-2 mb-4 mb-md-0">
+                    <span class="module-badge">2. MASTER INVENTORY</span>
+                    <h3 class="fw-bold mb-3">Track all assets.</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        OTLedger covers any asset—meaning any device with a network or connection interface falls under the asset category. OTLedger provides the ability for users to create custom attributes specific to each asset type based on their unique needs and requirements.
+                    </p>
+                    <div class="mt-4 p-3 bg-light border-start border-4 border-info rounded">
+                        <p class="text-secondary mb-0 small">
+                            <i class="bi bi-rocket-takeoff me-2 text-info"></i>
+                            <strong>Coming Next:</strong> Engineering drawings and soft tags will be introduced, along with related functionality to support a broader scope of IACS work.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mod 3 -->
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-5 mb-4 mb-md-0">
+                    <span class="module-badge">3. VIRTUAL ZONES</span>
+                    <h3 class="fw-bold mb-3">Purdue Model Architecture.</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        Raw IP addresses offer zero operational context. OTLedger transforms flat network data by allowing you to build Virtual Zones mapped directly to the Purdue Enterprise Reference Architecture. Instantly visualize exactly where a device sits within the plant hierarchy, complete with its first-level physical connections and logical data flows.
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/AssetOverview.png" alt="Virtual Zones" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mod 4 -->
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-7 order-2 order-md-1">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/assetNetworkModel.png" alt="Policy Definition" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+                <div class="col-md-5 order-1 order-md-2 mb-4 mb-md-0">
+                    <span class="module-badge">4. POLICY DEFINITION</span>
+                    <h3 class="fw-bold mb-3">Conduits & Protocol-Level Rules.</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        While Virtual Zones define where assets reside, Policies define how they are allowed to communicate. Establish secure conduits by defining the exact authorized Data Channels and flows between your zones. Specify the permitted IP interfaces and protocols (e.g., Modbus TCP, OPC UA). If your IDS detects traffic crossing boundaries outside these explicitly defined channels, you immediately know it is anomalous drift.
+                    </p>
+                    <div class="mt-4 p-3 bg-light border-start border-4 border-info rounded">
+                        <p class="text-secondary mb-0 small">
+                            <i class="bi bi-rocket-takeoff me-2 text-info"></i>
+                            <strong>Coming Next:</strong> Dynamic generation of ISA/IEC 62443 Zones and Conduit style visual network diagrams, rendered directly from your configuration data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mod 5 -->
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-5 mb-4 mb-md-0">
+                    <span class="module-badge">5. RISK MANAGEMENT</span>
+                    <h3 class="fw-bold mb-3">Contextual Risk Registers.</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        Stop tracking vulnerabilities in disconnected Excel files. Attach risks directly to the impacted hardware. Calculate severity using Likelihood and Impact matrices, and track mitigation efforts historically.
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/riskregister.png" alt="Risk Management" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mod 6 -->
+            <div class="row align-items-center mb-5 pb-5 border-bottom">
+                <div class="col-md-7 order-2 order-md-1">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/SCMPage.png" alt="Audit and Change" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+                <div class="col-md-5 order-1 order-md-2 mb-4 mb-md-0">
+                    <span class="module-badge">6. AUDIT & CHANGE</span>
+                    <h3 class="fw-bold mb-3">System Change Management (SCM).</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        When a system fails, "What changed?" is the first question. OTLedger’s built-in lightweight SCM engine ensures every firmware update, protocol shift, or new asset is documented, reviewed, and approved before the work is executed and design Intent is updated.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mod 7 -->
+            <div class="row align-items-center">
+                <div class="col-md-5 mb-4 mb-md-0">
+                    <span class="module-badge">7. IDENTITY & ACCESS</span>
+                    <h3 class="fw-bold mb-3">Role-Based Access Control.</h3>
+                    <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.8;">
+                        Onboard 3rd party contractors and system integrators safely. Using strict RBAC, you can restrict a vendor's visibility to only the specific Sites or Asset Roles they are contracted to manage.
+                    </p>
+                    <div class="mt-4 p-3 bg-light border-start border-4 border-info rounded">
+                        <p class="text-secondary mb-0 small">
+                            <i class="bi bi-rocket-takeoff me-2 text-info"></i>
+                            <strong>Coming Next:</strong> Seamless integration of OTLedger roles with your existing Domain Controller or central Identity Provider (IdP) for streamlined, centralized access management.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="screenshot-container">
+                        <div class="browser-header">
+                            <div class="browser-dot" style="background: var(--palette-error);"></div>
+                            <div class="browser-dot" style="background: var(--palette-warning);"></div>
+                            <div class="browser-dot" style="background: var(--palette-success);"></div>
+                        </div>
+                        <img src="assets/images/RBAC.png" alt="Identity and Access" class="img-fluid w-100 zoomable-image" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-5" style="background-color: var(--palette-primary);">
+        <div class="container py-5 text-center">
+            <h2 class="text-white fw-bold mb-4">Interested in OTLedger?</h2>
+            <p class="text-white mx-auto mb-5" style="max-width: 600px; font-size: 1.1rem; line-height: 1.6;">
+                Reach out to us to learn more about the application, explore its capabilities, or to discuss how it can help you or your customer organize and manage their OT infrastructure. <strong>OTLedger is currently undergoing beta trials—let us know if you are interested in participating!</strong>
+            </p>
+            <a href="mailto:info@otledger.com" class="btn btn-primary btn-lg fw-bold px-5 py-3 shadow">
+                <i class="bi bi-envelope-fill me-2"></i> info@otledger.com
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-4 border-top">
+        <div class="container text-center text-secondary">
+            <p class="mb-0">© <span id="year"></span> OT Labs. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+        <!-- Changed: Added style="max-width: 95vw;" to make the modal 95% of screen width -->
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 95vw;">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body p-0 position-relative text-center">
+                    <!-- Close Button -->
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 shadow" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1050; background-color: rgba(0,0,0,0.5);"></button>
+                    <!-- Modal Image -->
+                    <!-- Changed: Added style="max-height: 90vh; width: auto;" to prevent vertical scrolling -->
+                    <img src="" id="lightboxImage" class="img-fluid rounded shadow-lg" alt="Enlarged view" style="max-height: 90vh; width: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Footer Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Lightbox Logic
+        const lightboxModal = new bootstrap.Modal(document.getElementById('lightboxModal'));
+        const lightboxImage = document.getElementById('lightboxImage');
+
+        function openLightbox(imageSrc) {
+            lightboxImage.src = imageSrc;
+            lightboxModal.show();
+        }
+    </script>
+</body>
+</html>
