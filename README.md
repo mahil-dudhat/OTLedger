@@ -8,6 +8,12 @@ OTLedger bridges the gap between your static **Design Intent** and your **Real-T
 
 ---
 
+> [!TIP]
+> **Installing the Beta?**
+> If you are participating in the beta trials and need instructions on how to load and start the Docker images, please read the **[Beta Installation Guide](BETA_INSTALLATION.md)**.
+
+---
+
 ## ⚙️ Core Capabilities
 
 *   **Facility Management:** Hierarchically map physical plants, sub-sites, and control rooms to assign dedicated operational oversight.
